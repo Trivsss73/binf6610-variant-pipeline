@@ -1,1 +1,10 @@
 results/
+out/
+dev/
+ref/
+smoke-out/
+*.bam
+*.bai
+*.vcf.gz
+*.g.vcf.gz
+!smoke-run/cohort.filtered.vcf.gz
