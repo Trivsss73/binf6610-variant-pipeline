@@ -2,12 +2,32 @@
 set -euo pipefail
 
 # ---- arguments ----
-SHEET="${1:?Usage: $0 <samplesheet.csv> <outdir> [last_stage]}"
-OUTDIR="${2:?Usage: $0 <samplesheet.csv> <outdir> [last_stage]}"
-LAST="${3:-publish}"
+
+if [[ "${1:-}" == --* ]]; then
+    # flag style: --samplesheet X --outdir Y --to Z
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --samplesheet) SHEET="$2"; shift 2 ;;
+            --outdir)      OUTDIR="$2"; shift 2 ;;
+            --to)          LAST="$2"; shift 2 ;;
+            *) shift ;;
+        esac
+    done
+else
+    # positional style
+    SHEET="${1:-}"
+    OUTDIR="${2:-}"
+    LAST="${3:-publish}"
+fi
+
+[[ -n "${SHEET:-}" ]] || { echo "Usage: $0 <samplesheet> <outdir> [--to stage]" >&2; exit 1; }
+[[ -n "${OUTDIR:-}" ]] || { echo "Usage: $0 <samplesheet> <outdir> [--to stage]" >&2; exit 1; }
+LAST="${LAST:-publish}"
 
 # ---- source config ----
-source conf/pipeline.env
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "${SCRIPT_DIR}/conf/pipeline.env"
 
 # ---- logging (always to stderr) ----
 log() { printf '[%s] %s\n' "$(date +%H:%M:%S)" "$*" >&2; }
@@ -262,8 +282,8 @@ stage_publish()      {
         sha="${sha}-dirty"
     fi
 
-    printf '{\n  "git_sha": "%s",\n  "date": "%s",\n  "samplesheet": "%s"\n}\n' \
-        "$sha" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SHEET" \
+        printf '{\n  "git_sha": "%s",\n  "date": "%s",\n  "samplesheet": "%s",\n  "reference": "%s",\n  "regions": "%s"\n}\n' \
+        "$sha" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SHEET" "$REF" "$REGIONS" \
         > "${OUTDIR}/publish/manifest.json"
 
     log "manifest written: git_sha=$sha"

@@ -1,0 +1,7 @@
+{
+  "git_sha": "c6a65911ce677da18776b249a8a2481e0437bc87-dirty",
+  "date": "2026-09-29T04:01:37Z",
+  "samplesheet": "samplesheet.csv",
+  "reference": "/Users/trivsss/binf6610-variant-pipeline/smoke/smoke.fa",
+  "regions": "smoke_1mb"
+}
