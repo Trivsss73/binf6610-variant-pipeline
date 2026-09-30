@@ -9,7 +9,7 @@ if [[ "${1:-}" == --* ]]; then
         case "$1" in
             --samplesheet) SHEET="$2"; shift 2 ;;
             --outdir)      OUTDIR="$2"; shift 2 ;;
-            --to)          LAST="$2"; shift 2 ;;
+            --from)        LAST="$2"; shift 2 ;;
             *) shift ;;
         esac
     done
@@ -23,6 +23,7 @@ fi
 [[ -n "${SHEET:-}" ]] || { echo "Usage: $0 <samplesheet> <outdir> [--to stage]" >&2; exit 1; }
 [[ -n "${OUTDIR:-}" ]] || { echo "Usage: $0 <samplesheet> <outdir> [--to stage]" >&2; exit 1; }
 LAST="${LAST:-publish}"
+FIRST="${FIRST:-validate}"
 
 # ---- source config ----
 
@@ -292,7 +293,10 @@ stage_publish()      {
  }
 
 # ---- driver: run stages in order ----
+running=false
 for stage in "${STAGES[@]}"; do
+    [[ "$stage" == "$FIRST" ]] && running=true
+    [[ "$running" == true ]] || continue
     log "===== stage: $stage ====="
     "stage_${stage}"
     [[ "$stage" == "$LAST" ]] && break
