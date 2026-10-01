@@ -8,7 +8,9 @@
 #SBATCH --time=02:00:00
 #SBATCH --export=NONE
 
-source /courses/BINF6610.202710/shared/env/binf6610/bin/activate
+module load miniconda3/25.9.1
+source activate /courses/BINF6610.202710/shared/env/binf6610
+export REF INDEX REGIONS THREADS
 cd "${SLURM_SUBMIT_DIR}"
 source slurm/conf/slurm.env
 

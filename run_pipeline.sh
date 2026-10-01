@@ -225,17 +225,18 @@ stage_merge()        {
         gvcf_args+=(-V "${OUTDIR}/gvcf/${id}.g.vcf.gz")
     done < <(tail -n +2 "$SHEET")
 
-    rm -rf "${OUTDIR}/merged/gendb"
+    local ws="${TMPDIR:-/tmp}/genomicsdb"
+    rm -rf "${ws}"
 
     gatk GenomicsDBImport \
         "${gvcf_args[@]}" \
-        --genomicsdb-workspace-path "${OUTDIR}/merged/gendb" \
+        --genomicsdb-workspace-path "${ws}" \
         -L "$REGIONS" \
         2>> "${OUTDIR}/logs/genomicsdb.log"
 
     gatk GenotypeGVCFs \
         -R "$REF" \
-        -V "gendb://${OUTDIR}/merged/gendb" \
+        -V "gendb://${ws}" \
         -O "${OUTDIR}/merged/cohort.vcf.gz" \
         2>> "${OUTDIR}/logs/genotypegvcfs.log"
 

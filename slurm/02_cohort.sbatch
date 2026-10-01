@@ -4,10 +4,11 @@
 #SBATCH --error=logs/cohort_%j.err
 #SBATCH --cpus-per-task=4
 #SBATCH --mem=8G
-#SBATCH --time=01:00:00
+#SBATCH --time=02:00:00
 #SBATCH --export=NONE
 
-source /courses/BINF6610.202710/shared/env/binf6610/bin/activate
+module load miniconda3/25.9.1
+source activate /courses/BINF6610.202710/shared/env/binf6610
 cd "${SLURM_SUBMIT_DIR}"
 source slurm/conf/slurm.env
 
