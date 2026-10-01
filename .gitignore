@@ -3,8 +3,10 @@ out/
 dev/
 ref/
 smoke-out/
+cluster-out/
+logs/
 *.bam
 *.bai
-*.vcf.gz
-*.g.vcf.gz
 !smoke-run/cohort.filtered.vcf.gz
+!cluster-run/cohort.filtered.vcf.gz
+!cluster-run/manifest.json
