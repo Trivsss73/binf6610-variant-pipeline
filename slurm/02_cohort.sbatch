@@ -3,12 +3,10 @@
 #SBATCH --output=logs/cohort_%j.out
 #SBATCH --error=logs/cohort_%j.err
 #SBATCH --cpus-per-task=4
-#SBATCH --mem=8G
+#SBATCH --mem=24G
 #SBATCH --time=02:00:00
 #SBATCH --export=NONE
 
-module load miniconda3/25.9.1
-source activate /courses/BINF6610.202710/shared/env/binf6610
 cd "${SLURM_SUBMIT_DIR}"
 source slurm/conf/slurm.env
 
@@ -18,4 +16,12 @@ mkdir -p "${TMPDIR}"
 trap 'rm -rf "${TMPDIR}"' EXIT
 
 export REF INDEX REGIONS
-bash run_pipeline.sh --samplesheet "${SAMPLESHEET}" --outdir "${OUTDIR}" --from merge --to publish
+
+apptainer exec --cleanenv \
+    --env THREADS="${THREADS}" \
+    --env TMPDIR="${TMPDIR}" \
+    --env SLURM_JOB_ID="${SLURM_JOB_ID}" \
+    --env SLURM_CPUS_PER_TASK="${SLURM_CPUS_PER_TASK}" \
+    --bind /courses/BINF6610.202710,/scratch/${USER} \
+    "${SIF}" \
+    bash run_pipeline.sh --samplesheet "${SAMPLESHEET}" --outdir "${OUTDIR}" --from merge --to publish

@@ -284,8 +284,10 @@ stage_publish()      {
         sha="${sha}-dirty"
     fi
 
-        printf '{\n  "git_sha": "%s",\n  "date": "%s",\n  "samplesheet": "%s",\n  "reference": "%s",\n  "regions": "%s"\n}\n' \
-        "$sha" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SHEET" "$REF" "$REGIONS" \
+    local container="${APPTAINER_CONTAINER:-none}"
+
+    printf '{\n  "git_sha": "%s",\n  "date": "%s",\n  "samplesheet": "%s",\n  "reference": "%s",\n  "regions": "%s",\n  "container": "%s"\n}\n' \
+        "$sha" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SHEET" "$REF" "$REGIONS" "$container" \
         > "${OUTDIR}/publish/manifest.json"
 
     log "manifest written: git_sha=$sha"
