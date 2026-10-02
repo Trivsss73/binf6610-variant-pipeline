@@ -1,0 +1,8 @@
+{
+  "git_sha": "7d79364c53fd6252f8fbc1907b2836c09840e832-dirty",
+  "date": "2026-10-02T16:57:10Z",
+  "samplesheet": "/scratch/trivedi.dhai/binf6610-variant-pipeline/samplesheet_cluster.csv",
+  "reference": "/courses/BINF6610.202710/data/refs/grch38-1000g/GRCh38_full_analysis_set_plus_decoy_hla.fa",
+  "regions": "chr20:1-10000000",
+  "container": "/scratch/trivedi.dhai/containers/variant-call.sif"
+}

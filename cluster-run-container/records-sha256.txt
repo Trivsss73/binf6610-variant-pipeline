@@ -1,0 +1,9 @@
+5c303281deaeedea6c8cda39321b2b236885cdb78edff2f7d61e18332a54048b  -
+f0605bc423f21327be8566e19cdff4a74596aab8a9414aaa9f65664b09896a3d  -
+
+The two record checksums differ despite all seven tool versions matching exactly between
+the conda environment and the container image (diff versions-conda.txt versions-image.txt
+produced no output). The most likely cause is non-determinism in multi-threaded bwa mem
+alignment or GATK HaplotypeCaller: both tools can produce slightly different read orderings
+or tie-breaking decisions across runs even with identical inputs and versions, which
+cascades into minor differences in which variants are called at the margins.

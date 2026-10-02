@@ -22,6 +22,9 @@ apptainer exec --cleanenv \
     --env TMPDIR="${TMPDIR}" \
     --env SLURM_JOB_ID="${SLURM_JOB_ID}" \
     --env SLURM_CPUS_PER_TASK="${SLURM_CPUS_PER_TASK}" \
+    --env REF="${REF}" \
+    --env INDEX="${INDEX}" \
+    --env REGIONS="${REGIONS}" \
     --bind /courses/BINF6610.202710,/scratch/${USER} \
     "${SIF}" \
     bash run_pipeline.sh --samplesheet "${SAMPLESHEET}" --outdir "${OUTDIR}" --from merge --to publish
