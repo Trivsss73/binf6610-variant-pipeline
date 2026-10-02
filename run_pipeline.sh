@@ -4,12 +4,13 @@ set -euo pipefail
 # ---- arguments ----
 
 if [[ "${1:-}" == --* ]]; then
-    # flag style: --samplesheet X --outdir Y --to Z
+    # flag style: --samplesheet X --outdir Y --from A --to Z
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --samplesheet) SHEET="$2"; shift 2 ;;
             --outdir)      OUTDIR="$2"; shift 2 ;;
-            --from)        LAST="$2"; shift 2 ;;
+            --to)          LAST="$2"; shift 2 ;;
+            --from)        FIRST="$2"; shift 2 ;;
             *) shift ;;
         esac
     done
