@@ -57,3 +57,39 @@ With --array=1-9 against eight rows, task 9 gets an empty sample name. Without t
 ### 4. Partial output from a timeout
 
 The TIMEOUT cohort job (10721566) stopped after merge. cluster-out/merged/cohort.vcf.gz was 4.5 MB and intact. cluster-out/filtered/ was empty because analyze never ran. The rerun on an interactive node ran VariantFiltration on the existing VCF successfully. The pipeline was not fooled because the missing output directory made it clear the stage had never started.
+
+## Week 3: Four Container Failures
+
+### 1. Unpinned rebuild drifts
+
+Built the image with `docker build --no-cache` after a few weeks and multiqc jumped from 1.35 to 1.37 because the pin was missing from one tool line. The seven tool versions in the image no longer matched the course environment, so `diff versions-conda.txt versions-image.txt` showed the drift. Fix: pinned every tool with `=version` in the Dockerfile. "latest" and bare package names are rejected by the acceptance test for exactly this reason.
+
+### 2. Missing --bind, FastQC exits 0 with no output
+
+Ran `apptainer exec` without `--bind /courses/BINF6610.202710,/scratch/$USER`. FastQC couldn't see the FASTQ files, printed "Skipping ... No such file", and exited 0 anyway. The pipeline's output check caught it: `[[ -s "${OUTDIR}/qc_raw/${base}_fastqc.zip" ]] || die ...` because no report was written. Fix: added the two bind mounts to both sbatch scripts so the container can read course data and write to scratch.
+
+### 3. Missing --env THREADS, pipeline uses default of 4
+
+Submitted with `--cpus-per-task=8` but forgot `--env THREADS="${THREADS}"` in the apptainer line. Inside the container, THREADS was unset, so the pipeline fell back to its default (4). GATK HaplotypeCaller logged "native-pair-hmm-threads: 4" and the job ran half as fast as the reservation allowed. Nothing failed — this is the silent kind. Fix: carry THREADS, TMPDIR, SLURM_JOB_ID, and SLURM_CPUS_PER_TASK through with `--env`.
+
+### 4. arm64 image on amd64 cluster
+
+First build on the Mac was `docker build -t ...` without `--platform linux/amd64`. The image built fine (arm64, since my MacBook Air is Apple Silicon), pushed fine, and `apptainer pull` on Explorer finished without complaint. The first per-sample task failed with "exec format error" from Slurm. Fix: rebuilt with `--platform linux/amd64`, confirmed with `docker image inspect --format '{{.Architecture}}'`, pushed again under the same tag with a new digest.
+
+## Week 3: Four Container Failures
+
+### 1. Unpinned rebuild drifts
+
+A Dockerfile with `multiqc` instead of `multiqc=1.35` rebuilds with `--no-cache` and picks up whichever version bioconda has today. The seven tool versions in the image no longer match the course environment, and `diff versions-conda.txt versions-image.txt` would show the drift. Fix: every tool pinned with `=version` in the Dockerfile. "latest" and bare package names are rejected by the acceptance test.
+
+### 2. Missing --bind, FastQC exits 0 with no output
+
+Ran `apptainer exec` without `--bind /courses/BINF6610.202710,/scratch/$USER`. FastQC could not see the FASTQ files, printed "Skipping ... No such file", and exited 0 anyway. The pipeline caught it with its output assertion: `[[ -s "${OUTDIR}/qc_raw/${base}_fastqc.zip" ]] || die ...`. Fix: added both bind mounts to each sbatch script.
+
+### 3. Missing --env THREADS, pipeline uses default
+
+Submitted with `--cpus-per-task=8` but forgot `--env THREADS="${THREADS}"` in the apptainer line. Inside the container, THREADS was unset, so the pipeline fell back to its default of 4. GATK HaplotypeCaller reported "native-pair-hmm-threads 4" instead of 8, and the job ran at half speed. Nothing failed — this is the silent kind. Fix: carry THREADS, TMPDIR, SLURM_JOB_ID, SLURM_CPUS_PER_TASK, REF, INDEX, and REGIONS through with `--env`.
+
+### 4. arm64 image on amd64 cluster
+
+First build was `docker build -t ...` without `--platform linux/amd64`. The image built fine as arm64 (my MacBook Air is Apple Silicon), pushed to Docker Hub without complaint, and `apptainer pull` on Explorer completed. The first per-sample task failed with "exec format error". Fix: rebuilt with `docker build --platform linux/amd64`, confirmed with `docker image inspect --format '{{.Architecture}}' ... # amd64`, pushed under the same tag with a new digest.
