@@ -10,3 +10,8 @@ logs/
 !smoke-run/cohort.filtered.vcf.gz
 !cluster-run/cohort.filtered.vcf.gz
 !cluster-run/manifest.json
+work/
+.nextflow/
+.nextflow.log*
+results/
+nf-head-*.out
