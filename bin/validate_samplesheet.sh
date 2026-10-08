@@ -4,7 +4,7 @@ set -euo pipefail
 SHEET="$1"
 problems=0
 
-while IFS=, read -r id cond rep lt r1 r2; do
+while IFS=, read -r id cond rep lt r1 r2 _rest; do
     r1_base=$(basename "$r1")
     [[ -s "$r1_base" ]] || { echo "$id: R1 missing or empty: $r1_base" >&2; problems=$((problems + 1)); }
 
