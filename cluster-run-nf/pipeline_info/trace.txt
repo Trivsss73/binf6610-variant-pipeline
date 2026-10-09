@@ -1,0 +1,46 @@
+task_id	name	status	exit	container	native_id	realtime	%cpu	peak_rss
+1	VALIDATE	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-coreutils_gawk_gzip-7c58ccc2f9ca6bcc.img	10928042	43.1s	88.7%	8.9 MB
+3	FASTQC (NA12891)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/quay.io-biocontainers-fastqc-0.12.1--hdfd78af_0.img	10928227	34s	82.2%	575.4 MB
+2	FASTQC (NA12878)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/quay.io-biocontainers-fastqc-0.12.1--hdfd78af_0.img	10928245	32s	84.4%	598.7 MB
+4	FASTQC (NA12892)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/quay.io-biocontainers-fastqc-0.12.1--hdfd78af_0.img	10928258	18s	85.6%	435.9 MB
+6	FASTP (NA12891)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-fastp-1.3.7--075357a9d5c82494.img	10928213	27.4s	94.4%	1.1 GB
+9	FASTQC (NA12003)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/quay.io-biocontainers-fastqc-0.12.1--hdfd78af_0.img	10928260	19s	82.3%	428.7 MB
+5	FASTP (NA12878)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-fastp-1.3.7--075357a9d5c82494.img	10928183	26.5s	92.5%	1.1 GB
+8	FASTQC (NA07357)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/quay.io-biocontainers-fastqc-0.12.1--hdfd78af_0.img	10928261	27s	85.2%	553.4 MB
+11	FASTQC (NA10851)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/quay.io-biocontainers-fastqc-0.12.1--hdfd78af_0.img	10928262	34s	89.9%	589.6 MB
+7	FASTP (NA12892)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-fastp-1.3.7--075357a9d5c82494.img	10928222	31s	96.4%	1.3 GB
+13	FASTQC (NA12813)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/quay.io-biocontainers-fastqc-0.12.1--hdfd78af_0.img	10928263	47s	93.4%	607.3 MB
+10	BWA_MEM (NA12891)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-bwa_samtools-22527ddb3cc80fb3.img	10934157	3m 21s	388.0%	6.8 GB
+15	FASTQC (NA12873)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/quay.io-biocontainers-fastqc-0.12.1--hdfd78af_0.img	10928264	32s	91.6%	612.1 MB
+16	FASTP (NA12003)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-fastp-1.3.7--075357a9d5c82494.img	10928221	28.9s	96.0%	1.3 GB
+19	MARKDUPLICATES (NA12891)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934317	31.7s	147.1%	13 GB
+12	FASTP (NA07357)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-fastp-1.3.7--075357a9d5c82494.img	10928216	23.3s	93.2%	1.1 GB
+14	BWA_MEM (NA12878)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-bwa_samtools-22527ddb3cc80fb3.img	10934159	3m 3s	355.6%	6.8 GB
+17	BWA_MEM (NA12892)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-bwa_samtools-22527ddb3cc80fb3.img	10934162	1m 15s	456.4%	6.4 GB
+22	HAPLOTYPECALLER (NA12891)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934343	5m 21s	203.5%	1.2 GB
+21	FASTP (NA12813)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-fastp-1.3.7--075357a9d5c82494.img	10928224	41.6s	96.3%	1.1 GB
+18	FASTP (NA10851)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-fastp-1.3.7--075357a9d5c82494.img	10928223	26.1s	81.0%	1.1 GB
+26	MARKDUPLICATES (NA12892)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934283	1m 30s	34.3%	6.9 GB
+23	FASTP (NA12873)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-fastp-1.3.7--075357a9d5c82494.img	10928225	35.3s	83.9%	1.1 GB
+24	MARKDUPLICATES (NA12878)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934291	1m 11s	55.6%	7 GB
+20	BWA_MEM (NA12003)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-bwa_samtools-22527ddb3cc80fb3.img	10934169	44.4s	690.2%	6.4 GB
+25	BWA_MEM (NA07357)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-bwa_samtools-22527ddb3cc80fb3.img	10934161	2m 3s	569.1%	6.6 GB
+29	MULTIQC	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/quay.io-biocontainers-multiqc-1.35--pyhdfd78af_2.img	10934222	38.4s	10.6%	208.5 MB
+28	HAPLOTYPECALLER (NA12892)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934344	4m 37s	185.5%	1.7 GB
+30	HAPLOTYPECALLER (NA12878)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934357	4m 46s	201.7%	1.2 GB
+27	BWA_MEM (NA12813)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-bwa_samtools-22527ddb3cc80fb3.img	10934168	2m 31s	705.4%	7.7 GB
+33	MARKDUPLICATES (NA07357)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934289	1m 45s	46.0%	9.1 GB
+31	BWA_MEM (NA10851)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-bwa_samtools-22527ddb3cc80fb3.img	10934166	2m 16s	596.6%	6.8 GB
+32	MARKDUPLICATES (NA12003)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934284	1m 25s	38.3%	7 GB
+34	BWA_MEM (NA12873)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-bwa_samtools-22527ddb3cc80fb3.img	10934170	2m 27s	716.8%	7.1 GB
+37	MARKDUPLICATES (NA10851)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934294	33s	145.2%	12.2 GB
+38	HAPLOTYPECALLER (NA12003)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934345	3m 28s	210.9%	1.7 GB
+35	MARKDUPLICATES (NA12813)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934290	2m 42s	42.1%	7 GB
+39	MARKDUPLICATES (NA12873)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934299	35.6s	145.8%	12.7 GB
+36	HAPLOTYPECALLER (NA07357)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934349	4m 24s	202.9%	1.2 GB
+41	HAPLOTYPECALLER (NA12813)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934358	7m 53s	166.9%	916.2 MB
+40	HAPLOTYPECALLER (NA10851)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934341	4m 39s	196.1%	1.2 GB
+42	HAPLOTYPECALLER (NA12873)	CACHED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10934342	5m 38s	189.0%	1.2 GB
+43	JOINT_GENOTYPE	COMPLETED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10945195	7m 36s	102.7%	2 GB
+44	FILTER	COMPLETED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-gatk4_samtools_bcftools-1adede7d418fb46b.img	10945328	5.7s	148.5%	585.2 MB
+45	PUBLISH	COMPLETED	0	/scratch/trivedi.dhai/nxf-apptainer/community.wave.seqera.io-library-coreutils_gawk_gzip-7c58ccc2f9ca6bcc.img	10945350	286ms	35.8%	3.2 MB

@@ -16,14 +16,20 @@ process JOINT_GENOTYPE {
     script:
     def gvcf_args = gvcfs.collect { "-V ${it}" }.join(' ')
     """
+    LOCAL_DB=\$(mktemp -d)
+
     gatk GenomicsDBImport \
         ${gvcf_args} \
-        --genomicsdb-workspace-path gendb \
+        --genomicsdb-workspace-path \${LOCAL_DB}/gendb \
+        --tmp-dir \${LOCAL_DB} \
         -L ${region}
 
     gatk GenotypeGVCFs \
         -R ${ref} \
-        -V gendb://gendb \
-        -O cohort.vcf.gz
+        -V gendb://\${LOCAL_DB}/gendb \
+        -O cohort.vcf.gz \
+        --tmp-dir \${LOCAL_DB}
+
+    rm -rf \${LOCAL_DB}
     """
 }
