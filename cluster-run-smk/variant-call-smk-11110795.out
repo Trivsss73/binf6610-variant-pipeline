@@ -1,0 +1,42 @@
+Using profile profiles/explorer for setting default command line arguments.
+Traceback (most recent call last):
+
+  File "/courses/BINF6610.202710/shared/env/binf6610-workflows/lib/python3.12/site-packages/snakemake/cli.py", line 2217, in args_to_api
+    dag_api = workflow_api.dag(
+              ^^^^^^^^^^^^^^^^^
+
+  File "/courses/BINF6610.202710/shared/env/binf6610-workflows/lib/python3.12/site-packages/snakemake/api.py", line 362, in dag
+    return DAGApi(
+           ^^^^^^^
+
+  File "<string>", line 6, in __init__
+
+  File "/courses/BINF6610.202710/shared/env/binf6610-workflows/lib/python3.12/site-packages/snakemake/api.py", line 469, in __post_init__
+    self.workflow_api._workflow.dag_settings = self.dag_settings
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  File "/courses/BINF6610.202710/shared/env/binf6610-workflows/lib/python3.12/site-packages/snakemake/api.py", line 412, in _workflow
+    workflow = self._get_workflow()
+               ^^^^^^^^^^^^^^^^^^^^
+
+  File "/courses/BINF6610.202710/shared/env/binf6610-workflows/lib/python3.12/site-packages/snakemake/api.py", line 427, in _get_workflow
+    return Workflow(
+           ^^^^^^^^^
+
+  File "<string>", line 22, in __init__
+
+  File "/courses/BINF6610.202710/shared/env/binf6610-workflows/lib/python3.12/site-packages/snakemake/workflow.py", line 219, in __post_init__
+    self._sourcecache = SourceCache(
+                        ^^^^^^^^^^^^
+
+  File "/courses/BINF6610.202710/shared/env/binf6610-workflows/lib/python3.12/site-packages/snakemake/sourcecache.py", line 791, in __init__
+    os.makedirs(self.cache_path, exist_ok=True)
+
+  File "<frozen os>", line 215, in makedirs
+
+  File "<frozen os>", line 215, in makedirs
+
+  File "<frozen os>", line 225, in makedirs
+
+OSError: [Errno 122] Disk quota exceeded: '/home/trivedi.dhai/.cache/snakemake'
+
