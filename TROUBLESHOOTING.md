@@ -1,35 +1,33 @@
-# TROUBLESHOOTING — Week 4
+# TROUBLESHOOTING — Week 5
 
-## Failure 1: `-resume` after Ctrl-C
+## Failure 1: Ctrl-C mid-run, then rerun
 
-**Command:** Ran the smoke pipeline, pressed Ctrl-C during FASTP/BWA_MEM, then reran with `-resume`.
+**Command:** Ran the smoke pipeline, pressed Ctrl-C during fastqc (smoke_02).
 
-**What happened:** The interrupted run killed 6 running tasks. On resume, VALIDATE (1 task) and FASTP (2 tasks) showed `cached` because they had finished before the interrupt. The other 17 tasks ran again. Nextflow reported `Cached: 3`.
+**What happened:** Snakemake printed `Terminating processes on user request` and exit status 130. On the next run without any flag, Snakemake raised `IncompleteFilesException` for `work/fastqc/smoke_02` and told me to rerun with `--rerun-incomplete`. With that flag, 17 of 17 jobs ran: the 4 jobs that had completed before the interrupt were reused.
 
-**Fix:** `-resume` is the fix. It reuses every task that completed successfully and reruns the rest.
+**Fix:** Add `--rerun-incomplete` to the command. Snakemake knows which output files were cut off and reruns only those rules.
 
-## Failure 2: Reference as a queue channel
+## Failure 2: log without {sample} wildcard
 
-**Command:** Changed `BWA_MEM(FASTP.out.reads, ref, ref_index)` to `BWA_MEM(FASTP.out.reads, channel.fromPath(params.ref), ref_index)` and ran the smoke dataset.
+**Command:** Changed bwa_mem's log from `"logs/bwa_mem/{sample}.log"` to `"logs/bwa_mem.log"` and ran `snakemake -n`.
 
-**What happened:** BWA_MEM ran 1 of 1 instead of 3 of 3. Only one sample (smoke_02) made it through alignment and the rest of the pipeline. No error was reported. A queue channel is consumed after one sample reads it, so the other two samples had no reference and were silently dropped.
+**What happened:** Snakemake refused to build the DAG: `Not all output, log and benchmark files of rule bwa_mem contain the same wildcards.` The output has `{sample}` but the log does not, and Snakemake requires them to match so that two jobs do not write to the same log file.
 
-**Fix:** Use `file(params.ref)` to create a value channel, which can be read by every sample.
+**Fix:** Every per-sample rule's log must include the same `{sample}` wildcard as its output.
 
-## Failure 3: Missing backslash on `\$(…)` in a script block
+## Failure 3: Removed wildcard_constraints from both fastp rules
 
-**Command:** Changed `LOCAL_DB=\$(mktemp -d)` to `LOCAL_DB=$(mktemp -d)` in `modules/joint_genotype.nf` and ran the smoke dataset.
+**Command:** Deleted the `wildcard_constraints: sample=one_of(PAIRED)` and `sample=one_of(SINGLE)` from `fastp_paired` and `fastp_single`, then ran `snakemake -n`.
 
-**What happened:** JOINT_GENOTYPE failed with exit status 2. The task's `.command.sh` showed: LOCAL_DB=-V smoke_03.g.vcf.gz -V smoke_02.g.vcf.gz -V smoke_01.g.vcf.gzmktemp -d)
-Nextflow interpreted `$(mktemp -d)` as a Groovy/Nextflow variable expansion instead of passing it to bash. The `.command.err` said: `syntax error near unexpected token ')'`.
+**What happened:** `AmbiguousRuleException`: rules `fastp_paired` and `fastp_single` are ambiguous for `work/trim/smoke_01_R1.trim.fastq.gz`. Both rules can produce the same output file for sample smoke_01, and Snakemake cannot choose between them.
 
-**Fix:** Escape the dollar sign as `\$(mktemp -d)` so Nextflow passes it through to bash.
+**Fix:** Restore the `wildcard_constraints:` in each rule, so `fastp_paired` only matches paired samples and `fastp_single` only matches single-end samples.
 
-## Failure 4: Time limit too short on Explorer
+## Failure 4: Removed software-deployment-method: apptainer on Explorer
 
-**Command:** Set `time = '2m'` for the `BWA_MEM|HAPLOTYPECALLER` block in `nextflow.config` and submitted the Explorer run.
+**Command:** Deleted `software-deployment-method: apptainer` from `profiles/explorer/profile.yaml` and submitted the head job.
 
-**What happened:** BWA_MEM (NA07357) failed with exit status 140. I aimed for HAPLOTYPECALLER to fail, but BWA_MEM and HAPLOTYPECALLER share the same `withName` block so both got the 2-minute limit, and BWA_MEM hit it first. `sacct` showed:10928267 nf-BWA_ME+ FAILED 00:01:21 00:02:00 12:0
-The State was FAILED with Timelimit 00:02:00 and ExitCode 12:0. Nextflow translates the SIGTERM (signal 12 from Slurm's warning) into exit status 140.
+**What happened:** `fastp_paired` (NA12873) failed with exit status 127. The Slurm log at `.snakemake/slurm_logs/rule_fastp_paired/NA12873/11110865.log` showed `Singularity containers: ignored` and the rule's own log said `fastp: command not found`. Without Apptainer, Snakemake ran the rule on the bare compute node, which has no bioinformatics tools installed.
 
-**Fix:** Set `time = '1h'` back and resubmit with `-resume`. The cached tasks from before the failure were reused.
+**Fix:** Put `software-deployment-method: apptainer` back in the explorer profile. On resubmission, validate did not rerun because its output file still existed from the first run.
