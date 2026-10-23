@@ -1,0 +1,11 @@
+{
+  "git_sha": "unknown-dirty",
+  "date": "2026-10-23T16:59:17Z",
+  "samplesheet": "samplesheet.csv",
+  "reference": "/tmp/run.K1qa4J/data/smoke.fa",
+  "regions": "smoke_1mb",
+  "container": "none",
+  "batch_job_id": "7e14a2fe-e03f-447e-ae37-cc83f702ceec",
+  "batch_queue": "binf6610-queue",
+  "batch_compute_environment": "binf6610-fargate"
+}

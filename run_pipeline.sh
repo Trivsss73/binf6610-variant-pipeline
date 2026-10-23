@@ -287,8 +287,12 @@ stage_publish()      {
 
     local container="${APPTAINER_CONTAINER:-none}"
 
-    printf '{\n  "git_sha": "%s",\n  "date": "%s",\n  "samplesheet": "%s",\n  "reference": "%s",\n  "regions": "%s",\n  "container": "%s"\n}\n' \
-        "$sha" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SHEET" "$REF" "$REGIONS" "$container" \
+        printf '{\n  "git_sha": "%s",\n  "date": "%s",\n  "samplesheet": "%s",\n  "reference": "%s",\n  "regions": "%s",\n  "container": "%s",\n  "batch_job_id": "%s",\n  "batch_queue": "%s",\n  "batch_compute_environment": "%s"\n}\n' \
+        "$sha" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SHEET" "$REF" "$REGIONS" \
+        "${APPTAINER_CONTAINER:-none}" \
+        "${AWS_BATCH_JOB_ID:-none}" \
+        "${AWS_BATCH_JQ_NAME:-none}" \
+        "${AWS_BATCH_CE_NAME:-none}" \
         > "${OUTDIR}/publish/manifest.json"
 
     log "manifest written: git_sha=$sha"

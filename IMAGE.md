@@ -26,3 +26,7 @@ Pinned in `containers/Dockerfile`, confirmed with `tests/print_versions.sh` run 
 | git | 2.47.0 |
 
 All seven bioinformatics tools match the versions in `/courses/BINF6610.202710/shared/env/binf6610`. `diff versions-conda.txt versions-image.txt` prints nothing.
+
+## The image in ECR
+
+<account>.dkr.ecr.us-east-2.amazonaws.com/variant-call@sha256:f8f0a0e81099df9b9b31e1ff11faa2ccdffbd15d9702c44c9e0e5c017f08bf17
