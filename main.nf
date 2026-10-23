@@ -13,7 +13,7 @@ workflow {
     main:
     ref       = file(params.ref)
     ref_index = files("${params.ref}.*")
-    ref_dict  = file("${ref.parent}/${ref.baseName}.dict")
+    ref_dict = ref.resolveSibling("${ref.baseName}.dict")
     sheet     = file(params.samplesheet)
 
     ch_samples = channel.fromPath(sheet)
