@@ -255,7 +255,7 @@ mkdir -p "${OUTDIR}/filtered"
         -R "$REF" \
         -V "${OUTDIR}/merged/cohort.vcf.gz" \
         -O "${OUTDIR}/filtered/cohort.filtered.vcf.gz" \
-        --filter-expression "QD < 20.0" --filter-name "LowQD" \
+        --filter-expression "QD < 2.0" --filter-name "LowQD" \
         --filter-expression "FS > 60.0" --filter-name "HighFS" \
         --filter-expression "MQ < 40.0" --filter-name "LowMQ" \
         2>> "${OUTDIR}/logs/filtration.log"
