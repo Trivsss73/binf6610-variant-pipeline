@@ -1,0 +1,30 @@
+{
+  "pipeline": {
+    "name": "variant-call",
+    "version": "1.0.0",
+    "implementation": "aws-batch",
+    "git_sha": "04ea4f0e7ee209835ede40fb410376c07419e773",
+    "run_id": "2026-11-06T03:46:52Z-04ea",
+    "started_at": "2026-11-06T03:46:52Z",
+    "finished_at": "2026-11-06T03:50:53Z",
+    "exit_status": "success"
+  },
+  "platform": {
+    "kind": "aws-batch",
+    "batch_job_id": "b2e72462-31cb-4f07-8333-8f7c5e76c68e",
+    "batch_queue": "binf6610-queue",
+    "batch_compute_environment": "binf6610-fargate"
+  },
+  "reference": {
+    "genome": "smoke_1mb"
+  },
+  "samples": [
+    {"sample_id": "smoke_01", "library_type": "paired", "condition": "unaffected"},
+    {"sample_id": "smoke_02", "library_type": "paired", "condition": "affected"},
+    {"sample_id": "smoke_03", "library_type": "single", "condition": "affected"}
+  ],
+  "outputs": [
+    {"stage": "analyze", "type": "cohort_vcf", "path": "cohort.filtered.vcf.gz", "checksum": "sha256:60fb3903004cd35caa35ff5674611bef4037fa50f4a77db54e705809a1cd1939"}
+  ],
+  "metrics": []
+}
