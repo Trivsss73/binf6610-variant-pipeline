@@ -16,3 +16,7 @@ out/
 smoke-out/
 tests/
 *.pdf
+tests
+.github
+ci-out
+cd-run*
