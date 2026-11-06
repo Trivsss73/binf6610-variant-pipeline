@@ -30,6 +30,7 @@ FIRST="${FIRST:-validate}"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "${SCRIPT_DIR}/conf/pipeline.env"
+STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 # ---- logging (always to stderr) ----
 log() { printf '[%s] %s\n' "$(date +%H:%M:%S)" "$*" >&2; }
@@ -275,30 +276,84 @@ stage_qc_report()    {
 
  }
 stage_publish()      {
-
-    mkdir -p "${OUTDIR}/publish"
+    mkdir -p "${OUTDIR}/results"
     log "publishing results"
 
-    local sha
-    sha=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
-    if ! git diff-index --quiet HEAD -- 2>/dev/null; then
-        sha="${sha}-dirty"
+    cp "${OUTDIR}/filtered/cohort.filtered.vcf.gz" "${OUTDIR}/results/"
+
+    local sha="${GIT_SHA:-$(git rev-parse HEAD 2>/dev/null || echo unknown)}"
+    local version="${PIPELINE_VERSION:-0.0.1}"
+    local finished_at
+    finished_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+    local pkind="laptop" impl="bash"
+    if [[ -n "${AWS_BATCH_JOB_ID:-}" ]]; then
+        pkind="aws-batch"; impl="aws-batch"
+    elif [[ -f /.dockerenv ]]; then
+        pkind="docker-local"; impl="docker"
     fi
 
-    local container="${APPTAINER_CONTAINER:-none}"
+    local run_id="${STARTED_AT}-${sha:0:4}"
 
-        printf '{\n  "git_sha": "%s",\n  "date": "%s",\n  "samplesheet": "%s",\n  "reference": "%s",\n  "regions": "%s",\n  "container": "%s",\n  "batch_job_id": "%s",\n  "batch_queue": "%s",\n  "batch_compute_environment": "%s"\n}\n' \
-        "$sha" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$SHEET" "$REF" "$REGIONS" \
-        "${APPTAINER_CONTAINER:-none}" \
-        "${AWS_BATCH_JOB_ID:-none}" \
-        "${AWS_BATCH_JQ_NAME:-none}" \
-        "${AWS_BATCH_CE_NAME:-none}" \
-        > "${OUTDIR}/publish/manifest.json"
+    # samples JSON from samplesheet
+    local samples="" first=true
+    while IFS=, read -r sid cond rep lib r1 r2 _rest; do
+        [[ "$sid" == "sample_id" ]] && continue
+        $first || samples+=","
+        first=false
+        printf -v entry '\n    {"sample_id": "%s", "library_type": "%s", "condition": "%s"}' "$sid" "$lib" "$cond"
+        samples+="$entry"
+    done < "$SHEET"
+
+    # outputs JSON: checksum each file in results/ except the manifest
+    local outputs="" cksum
+    first=true
+    for f in "${OUTDIR}/results/"*; do
+        [[ -f "$f" ]] || continue
+        [[ "$(basename "$f")" == "manifest.json" ]] && continue
+        cksum="sha256:$(sha256sum "$f" | cut -d' ' -f1)"
+        $first || outputs+=","
+        first=false
+        printf -v entry '\n    {"stage": "analyze", "type": "cohort_vcf", "path": "%s", "checksum": "%s"}' "$(basename "$f")" "$cksum"
+        outputs+="$entry"
+    done
+
+    # platform JSON
+    local pjson
+    if [[ "$pkind" == "aws-batch" ]]; then
+        printf -v pjson '{\n    "kind": "%s",\n    "batch_job_id": "%s",\n    "batch_queue": "%s",\n    "batch_compute_environment": "%s"\n  }' \
+            "$pkind" "${AWS_BATCH_JOB_ID:-}" "${AWS_BATCH_JQ_NAME:-}" "${AWS_BATCH_CE_NAME:-}"
+    else
+        printf -v pjson '{"kind": "%s"}' "$pkind"
+    fi
+
+    cat > "${OUTDIR}/results/manifest.json" <<MANIFEST
+{
+  "pipeline": {
+    "name": "variant-call",
+    "version": "${version}",
+    "implementation": "${impl}",
+    "git_sha": "${sha}",
+    "run_id": "${run_id}",
+    "started_at": "${STARTED_AT}",
+    "finished_at": "${finished_at}",
+    "exit_status": "success"
+  },
+  "platform": $(echo -e "${pjson}"),
+  "reference": {
+    "genome": "${REGIONS}"
+  },
+  "samples": [${samples}
+  ],
+  "outputs": [${outputs}
+  ],
+  "metrics": []
+}
+MANIFEST
 
     log "manifest written: git_sha=$sha"
     log "publish complete"
-
- }
+}
 
 # ---- driver: run stages in order ----
 running=false
