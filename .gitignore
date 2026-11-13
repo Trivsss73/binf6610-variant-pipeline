@@ -19,3 +19,4 @@ nf-head-*.out
 work/
 logs/
 slurm/*.out
+*.db
